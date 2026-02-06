@@ -5,10 +5,10 @@ import com.jhonatan.memesonline.features.memesonline.domain.entities.Meme
 
 fun MemeDto.toDomain(): Meme {
     return Meme(
-        id = this.id,
+        id = this.id.toString(),
         title = this.title,
-        imageUrl = this.imageUrl,
-        authorName = this.author,
+        imageUrl = this.imageData.replace("\n", "").replace("\r", ""),
+        authorName = "Usuario ${this.authorId}",
         uploadDate = this.date
     )
 }

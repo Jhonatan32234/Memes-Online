@@ -5,16 +5,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.jhonatan.memesonline.core.utils.ImageUtils
 import com.jhonatan.memesonline.features.memesonline.domain.entities.Meme
 
 @Composable
 fun MemeCard(meme: Meme, modifier: Modifier = Modifier) {
+    val bitmap = remember (meme.imageUrl) {
+        ImageUtils.decodeBase64ToBitmap(meme.imageUrl)
+    }
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -39,7 +44,7 @@ fun MemeCard(meme: Meme, modifier: Modifier = Modifier) {
             }
 
             AsyncImage(
-                model = meme.imageUrl,
+                model = bitmap,
                 contentDescription = "Meme: ${meme.title}",
                 modifier = Modifier
                     .fillMaxWidth()

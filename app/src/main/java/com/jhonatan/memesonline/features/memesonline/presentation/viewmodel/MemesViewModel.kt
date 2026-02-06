@@ -31,13 +31,18 @@ class MemesViewModel(
         }
     }
 
-    fun uploadMeme(title: String, uri: String) {
+    fun uploadMeme(title: String, base64: String) {
         _uiState.update { it.copy(isUploading = true) }
         viewModelScope.launch {
-            uploadMemeUseCase(title, uri).onSuccess {
-                loadMemes()
-            }
-            _uiState.update { it.copy(isUploading = false) }
+            uploadMemeUseCase(title, base64).fold(
+                onSuccess = {
+                    loadMemes()
+                    _uiState.update { it.copy(isUploading = false) }
+                },
+                onFailure = { error ->
+                    _uiState.update { it.copy(isUploading = false, error = error.message) }
+                }
+            )
         }
     }
 }
