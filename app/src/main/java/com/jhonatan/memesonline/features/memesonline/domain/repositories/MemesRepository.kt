@@ -6,4 +6,8 @@ interface MemesRepository {
     suspend fun getAllMemes(): List<Meme>
 
     suspend fun uploadMeme(title: String, imageUrl: String): Result<Unit>
+
+    suspend fun updateMeme(id: String, title: String?, image: String?): Result<Unit>
+
+    suspend fun deleteMeme(id: String): Result<Unit>
 }

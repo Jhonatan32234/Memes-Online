@@ -27,60 +27,52 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jhonatan.memesonline.features.auth.presentation.components.ErrorCard
 import com.jhonatan.memesonline.features.auth.presentation.viewmodel.AuthViewModel
 
 @Composable
 fun LoginScreen(
-    factory: AuthViewModelFactory,
+    viewModel: AuthViewModel,
     onLoginSuccess: () -> Unit,
     onNavigateToRegister: () -> Unit
 ) {
-    val viewModel: AuthViewModel = viewModel(factory = factory)
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize().padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Bienvenido a MemeApp", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
+
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = uiState.email,
+            onValueChange = { viewModel.onEmailChanged(it) },
+            label = { Text("Email") }
+        )
+        OutlinedTextField(
+            value = uiState.password,
+            onValueChange = { viewModel.onPasswordChanged(it) },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation()
         )
 
         if (uiState.error != null) {
-            Surface (
-                color = MaterialTheme.colorScheme.errorContainer,
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
-            ) {
-                Text(
-                    text = uiState.error!!,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(12.dp),
-                    textAlign = TextAlign.Center
-                )
-            }
+            ErrorCard(uiState.error!!)
         }
+
         Button(
-            onClick = { viewModel.onLogin(email, password, onLoginSuccess) },
+            onClick = { viewModel.onLogin(onLoginSuccess) },
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             enabled = !uiState.isLoading
         ) {
             if (uiState.isLoading) CircularProgressIndicator(modifier = Modifier.size(24.dp))
             else Text("Iniciar Sesión")
         }
-        TextButton (onClick = onNavigateToRegister) {
+
+        TextButton(onClick = onNavigateToRegister) {
             Text("¿No tienes cuenta? Regístrate")
         }
     }

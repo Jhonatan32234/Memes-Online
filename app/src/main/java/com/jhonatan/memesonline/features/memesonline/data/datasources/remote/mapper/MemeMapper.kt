@@ -9,6 +9,7 @@ fun MemeDto.toDomain(): Meme {
         title = this.title,
         imageUrl = this.imageData.replace("\n", "").replace("\r", ""),
         authorName = "Usuario ${this.authorId}",
+        authorId = this.authorId.toString(),
         uploadDate = this.date
     )
 }

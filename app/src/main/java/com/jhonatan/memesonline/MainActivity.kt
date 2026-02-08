@@ -17,8 +17,11 @@ import com.jhonatan.memesonline.features.memesonline.di.MemesModule
 import com.jhonatan.memesonline.ui.theme.MemesOnlineTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jhonatan.memesonline.features.auth.presentation.screens.RegisterScreen
+import com.jhonatan.memesonline.features.auth.presentation.viewmodel.AuthViewModel
 import com.jhonatan.memesonline.features.memesonline.presentation.screens.MemesScreen
+import com.jhonatan.memesonline.features.memesonline.presentation.viewmodel.MemesViewModel
 
 class MainActivity : ComponentActivity() {
     lateinit var appContainer: AppContainer
@@ -38,22 +41,31 @@ class MainActivity : ComponentActivity() {
 
                     when (currentScreen) {
                         "login" -> {
+                            val authViewModel: AuthViewModel = viewModel(
+                                factory = authModule.provideAuthViewModelFactory()
+                            )
                             LoginScreen(
-                                factory = authModule.provideAuthViewModelFactory(),
+                                viewModel = authViewModel, // Pasamos el viewModel, no la factory
                                 onLoginSuccess = { currentScreen = "memes" },
                                 onNavigateToRegister = { currentScreen = "register" }
                             )
                         }
                         "register" -> {
+                            val authViewModel: AuthViewModel = viewModel(
+                                factory = authModule.provideAuthViewModelFactory()
+                            )
                             RegisterScreen(
-                                factory = authModule.provideAuthViewModelFactory(),
+                                viewModel = authViewModel,
                                 onRegisterSuccess = { currentScreen = "login" },
                                 onNavigateToLogin = { currentScreen = "login" }
                             )
                         }
                         "memes" -> {
-                            MemesScreen(
+                            val memesViewModel: MemesViewModel = viewModel(
                                 factory = memesModule.provideMemesViewModelFactory()
+                            )
+                            MemesScreen(
+                                viewModel = memesViewModel
                             )
                         }
                     }

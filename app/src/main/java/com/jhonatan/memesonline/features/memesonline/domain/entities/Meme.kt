@@ -5,5 +5,6 @@ data class Meme(
     val title: String,
     val imageUrl: String,
     val authorName: String,
+    val authorId: String,
     val uploadDate: String
 )

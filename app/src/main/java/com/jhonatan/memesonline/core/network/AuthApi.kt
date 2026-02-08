@@ -1,4 +1,4 @@
-package com.jhonatan.memesonline.features.auth.domain.usecases
+package com.jhonatan.memesonline.core.network
 
 import com.jhonatan.memesonline.features.auth.data.datasources.remote.model.LoginRequest
 import com.jhonatan.memesonline.features.auth.data.datasources.remote.model.LoginResponse

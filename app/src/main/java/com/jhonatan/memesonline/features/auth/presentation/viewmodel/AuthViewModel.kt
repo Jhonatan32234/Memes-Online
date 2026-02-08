@@ -17,7 +17,15 @@ class AuthViewModel(
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun onLogin(email: String, pass: String, onSuccess: () -> Unit) {
+    // Funciones para actualizar el estado desde la UI
+    fun onEmailChanged(newValue: String) = _uiState.update { it.copy(email = newValue) }
+    fun onPasswordChanged(newValue: String) = _uiState.update { it.copy(password = newValue) }
+    fun onConfirmPasswordChanged(newValue: String) = _uiState.update { it.copy(confirmPassword = newValue) }
+
+    fun onLogin(onSuccess: () -> Unit) {
+        val email = _uiState.value.email
+        val pass = _uiState.value.password
+
         _uiState.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             loginUseCase(email, pass).fold(
@@ -26,21 +34,22 @@ class AuthViewModel(
                     onSuccess()
                 },
                 onFailure = { error ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = error.message
-                        )
-                    }
+                    _uiState.update { it.copy(isLoading = false, error = error.message) }
                 }
             )
         }
     }
 
-    fun onRegister(email: String, pass: String, onSuccess: () -> Unit) {
+    fun onRegister(onSuccess: () -> Unit) {
+        val state = _uiState.value
+        if (state.password != state.confirmPassword) {
+            _uiState.update { it.copy(error = "Las contraseñas no coinciden") }
+            return
+        }
+
         _uiState.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
-            registerUseCase(email, pass).fold(
+            registerUseCase(state.email, state.password).fold(
                 onSuccess = {
                     _uiState.update { it.copy(isLoading = false) }
                     onSuccess()

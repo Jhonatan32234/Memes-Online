@@ -4,7 +4,7 @@ import android.content.Context
 import com.jhonatan.memesonline.core.network.MemeApi
 import com.jhonatan.memesonline.features.auth.data.repositories.AuthRepositoryImpl
 import com.jhonatan.memesonline.features.auth.domain.repositories.AuthRepository
-import com.jhonatan.memesonline.features.auth.domain.usecases.AuthApi
+import com.jhonatan.memesonline.core.network.AuthApi
 import com.jhonatan.memesonline.features.memesonline.domain.repositories.MemesRepository
 import com.jhonatan.memesonline.features.memesonline.data.repositories.MemesRepositoryImpl
 import okhttp3.Interceptor

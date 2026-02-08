@@ -6,3 +6,8 @@ data class MemeUploadRequest(
     @SerializedName("title") val title: String,
     @SerializedName("image_data") val imageData: String
 )
+
+data class MemeUpdateRequest(
+    @SerializedName("title") val title: String?,
+    @SerializedName("image_data") val imageData: String?
+)

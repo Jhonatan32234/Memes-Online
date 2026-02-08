@@ -5,7 +5,9 @@ import com.jhonatan.memesonline.features.auth.domain.usecases.LoginUseCase
 import com.jhonatan.memesonline.features.auth.domain.usecases.RegisterUseCase
 import com.jhonatan.memesonline.features.auth.presentation.screens.AuthViewModelFactory
 
-class AuthModule(private val appContainer: AppContainer) {
+class AuthModule(
+    private val appContainer: AppContainer
+) {
     fun provideAuthViewModelFactory(): AuthViewModelFactory {
         return AuthViewModelFactory(
             LoginUseCase(appContainer.authRepository),
