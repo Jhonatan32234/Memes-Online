@@ -17,7 +17,6 @@ class AuthViewModel(
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState = _uiState.asStateFlow()
 
-    // Funciones para actualizar el estado desde la UI
     fun onEmailChanged(newValue: String) = _uiState.update { it.copy(email = newValue) }
     fun onPasswordChanged(newValue: String) = _uiState.update { it.copy(password = newValue) }
     fun onConfirmPasswordChanged(newValue: String) = _uiState.update { it.copy(confirmPassword = newValue) }

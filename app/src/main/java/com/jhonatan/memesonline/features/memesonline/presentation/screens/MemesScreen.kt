@@ -109,7 +109,6 @@ fun MemesScreen(viewModel: MemesViewModel) {
             confirmButton = {
                 Button(
                     onClick = { viewModel.saveMeme() },
-                    // Validamos que si es nuevo, obligatoriamente tenga imagen
                     enabled = uiState.editingMemeId != null || uiState.selectedBase64.isNotEmpty()
                 ) {
                     Text(if (uiState.editingMemeId == null) "Publicar" else "Guardar Cambios")

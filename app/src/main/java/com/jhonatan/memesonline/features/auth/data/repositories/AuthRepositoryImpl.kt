@@ -14,7 +14,7 @@ class AuthRepositoryImpl(
 
     companion object {
         var accessToken: String? = null
-        var currentUserId: String? = null // <--- Nueva variable para el ID
+        var currentUserId: String? = null
     }
 
     override suspend fun login(email: String, pass: String): Result<User> {
